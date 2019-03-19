@@ -1,11 +1,13 @@
 package com.nibado.cmdoauth;
 
 import com.nibado.cmdoauth.strava.*;
+import com.nibado.cmdoauth.strava.model.*;
 import retrofit2.Response;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.Stream;
@@ -29,7 +31,7 @@ public class Strava {
         server = startServer();
 
         String redirectUrl = String.format("http://localhost:%s", server.getListeningPort());
-        String authUrl = getAuthorizeUrl(config.getProperty("strava_client_id"), redirectUrl, "activity:write,read");
+        String authUrl = getAuthorizeUrl(config.getProperty("strava_client_id"), redirectUrl, "activity:read_all,read_all,profile:read_all");
 
         System.out.printf("Please point your browser to:\n\t%s\n", authUrl);
 
@@ -58,6 +60,12 @@ public class Strava {
         Athlete athlete = api.getAthlete(new BearerToken(accessToken)).execute().body();
 
         System.out.println(athlete);
+
+        List<Activity> activities = api.getAthleteActivities(new BearerToken(accessToken)).execute().body();
+
+        activities.forEach(a -> {
+            System.out.printf("%s: %s\n", a.getName(), a.getDistance());
+        });
 
         server.stop();
     }

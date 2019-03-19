@@ -1,4 +1,4 @@
-package com.nibado.cmdoauth.strava;
+package com.nibado.cmdoauth.strava.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Value;

@@ -1,4 +1,4 @@
-package com.nibado.cmdoauth.strava;
+package com.nibado.cmdoauth.strava.model;
 
 public class BearerToken {
     private final String token;
